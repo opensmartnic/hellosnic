@@ -1,0 +1,31 @@
+
+# 设置接收 dma的寄存器
+python rw_pcie_reg.py -d /dev/scull_ctl -a 0x010030 -v 0x00007001
+python rw_pcie_reg.py -d /dev/scull_ctl -a 0x010048 -v 0x00001000
+# 启动一次接收（到网卡内存）
+python rw_pcie_reg.py -d /dev/scull_ctl -a 0x010058 -v 0x00001000
+
+
+# 监控接收到的报文
+watch -n 2 hd /dev/scull0 -n 2048 -s 4k
+
+# 持续接收
+watch -n 2 python rw_pcie_reg.py -d /dev/scull_ctl -a 0x010058 -v 0x00001000
+
+# 读dma的寄存器
+# python rw_pcie_reg.py -d /dev/scull_ctl -a 0x002058
+
+# 设置发送 dma的寄存器
+python rw_pcie_reg.py -d /dev/scull_ctl -a 0x010000 -v 0x00007001
+python rw_pcie_reg.py -d /dev/scull_ctl -a 0x010018 -v 0x00000000
+# 启动一次发送（从网卡内存）
+python rw_pcie_reg.py -d /dev/scull_ctl -a 0x010028 -v 0x00000040
+
+# 监控是否有广播报文
+tcpdump  -i enp0s31f6 -e ether host ff:ff:ff:ff:ff:ff
+
+# 监控来自snic的报文
+tcpdump  -i enp0s31f6 -e ether host 06:05:04:03:02:da
+
+# 开启数据在线处理（UDP报文内容+1）
+python rw_pcie_reg.py -d /dev/scull_ctl -a 0x011000 -v 0x0001c358
