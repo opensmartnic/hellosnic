@@ -42,3 +42,10 @@
 
 ![](img/sim.png)
 
+### 参考
+
+[1] How to Design SmartNICs Using FPGAs to Increase Server Compute Capacity. Achronix, 2019 [[Website]](https://www.achronix.com/sites/default/files/docs/How_to_Design_SmartNICs_Using_FPGAs_to_Increase_Server_Compute_Capacity_WP017.pdf)
+
+[2] Linux Device Driver, 3rd edition. [Website](https://lwn.net/Kernel/LDD3/)
+
+[3] https://github.com/duxing2007/ldd3-examples-3.x
