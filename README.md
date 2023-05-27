@@ -1,48 +1,50 @@
 ## Hellosnic
-智能网卡的结构完整的入门级示例，可以：
+An elementary-level smartnic example, with fpga-based integrated structure. 
 
-* 借助cocotb进行仿真，观察报文的接收和发送
-* 提供一个简单的数据处理模块，对设定的端口来源的流量进行简单的处理（数据数值+1，无实质用途，仅示例）；也可以自行扩展
-* 可以实际运行，在特定的开发板上；加载驱动后可以像一般的网卡一样使用（但没有性能和可靠性保证）
+* Simulation with [Cocotb](https://www.cocotb.org/), facilitates the observation of message reception and transmission
+* Provide a simple data processing module to perform some processing on the traffic. Only apply to udp packet with preset port.  It can also be expanded on your own.
+* Can be actually run on a specific development board. After loading the driver, it can be used like a regular network card (but there is no guarantee of performance and reliability)
 
-### 架构
+### Architecture
 
-尽可能简单：
+As simple as possible：
 
-* 假设是使用千兆以太网电口，与物理层芯片的接口假设是RGMII
-* 以太网报文经MAC与物理层交互
-* MAC经过一个DMA模块，与网卡上的内存交互
-* PCIe直接取放内存内容（无主机级别的DMA）
-* 没有中断（而是在驱动上用轮询代替）
+* Assuming a gigabit Ethernet port is used and the interface with the physical layer chip is assumed to be RGMII
+* Above the physical layer is a MAC module
+* Packet from/to the MAC passes through a DMA module and save to/load from the memory on the network card
+* PCIe directly fetches and stores memory content (without host level DMA)
+* No interruption (instead of using polling on the host driver)
 
-![image-20230525010243177](./arch/overview.png)
+![image-20230527222356935](arch/overview-en.png)
 
-在除数据处理外，其他都采用xilinx的IP核实现。具体的架构图见[pdf](arch/system.pdf)
+Except data processing, all other implementations are implemented using Xilinx's IP core. The specific architecture diagram is shown in [pdf](arch/system.pdf)
 
-### 运行实例
+### Running
 
-实际运行环境：
+operating environment:
 
-* FPGA：Kintex 7，7k160
-* 开发板：某品牌（需要根据实际情况调整约束文件引脚）
-* IDE：Vivado 2019.2 windows
-* 板卡实际部署环境：ubuntu 16.04， 内核版本：4.4.0-131-generic
-* 通过以太网电口连入局域网，预设地址：192.168.13.10/24 
+* FPGA: Kinex 7, 7k160
+* Development board: A certain brand (constraint file  need to be adjusted according to the actual situation)
+* IDE: Vivado 2019.2, windows 10
+* Host of the board(nic) : ubuntu 16.04, kernel version: 4.4.0-131 generic
+* Connect to the local area network through the Ethernet port, with a preset address of 192.168.13.10/24
 
-![](img/exp.png)
+![image-20230527223131908](img/exp-en.png)
 
-### 仿真环境
+The tarball of project can be found in release assets.
 
-可运行的仿真环境：
+### Simulation
 
-* cocotb：1.7.0.dev0
-* modelsim：2019.2
+Environment:
 
-其他环境理论上也可运行。由于大量使用xilinx的IP核，需要先在仿真软件中编译IP核。
+* Cocotb: 1.7.0.dev0
+* Modelsim: 2019. 2
+
+Due to the use of Xilinx's IP cores, it is necessary to first compile the IP cores in simulation software.
 
 ![](img/sim.png)
 
-### 参考
+### References
 
 [1] How to Design SmartNICs Using FPGAs to Increase Server Compute Capacity. Achronix, 2019 [[Website]](https://www.achronix.com/sites/default/files/docs/How_to_Design_SmartNICs_Using_FPGAs_to_Increase_Server_Compute_Capacity_WP017.pdf)
 
